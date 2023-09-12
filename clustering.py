@@ -44,8 +44,9 @@ def dbscan_algo():
 
     X = data[['AL', 'ACD', 'WTW', 'K1', 'K2']]
 
-
-    dbscan = DBSCAN(eps=1, min_samples=10)
+    #O Dbscan só importa os seguintes valores: eps é a distancia que ele escaneia procurando vizinhos e min_samples é o numero MINIMO de vizinhos
+    #que devem ter distancia eps para serem agrupados
+    dbscan = DBSCAN(eps=1.0, min_samples=10)
     dbscan.fit(X)
 
     # Obtenha os rótulos dos clusters para cada observação
