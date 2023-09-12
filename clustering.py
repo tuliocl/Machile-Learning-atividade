@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
 from sklearn.cluster import KMeans
+from sklearn.cluster import DBSCAN
 
 # Ler o arquivo Excel
 data = pd.read_excel("barrettII_eyes_clustering.xlsx")
@@ -36,6 +38,29 @@ def kmeans_algo():
     # Salve cada DataFrame em um arquivo
     for i, cluster_df in enumerate(cluster_dataframes):
         #pode mudar o nome
-        cluster_df.to_csv(f'cluster_{i + 1}.csv', index=False)
+        cluster_df.to_csv(f'Gerado pelo kmeans{i + 1}.csv', index=False)
+
+def dbscan_algo():
+
+    X = data[['AL', 'ACD', 'WTW', 'K1', 'K2']]
+
+
+    dbscan = DBSCAN(eps=1, min_samples=10)
+    dbscan.fit(X)
+
+    # Obtenha os rótulos dos clusters para cada observação
+    labels = dbscan.labels_
+
+    # Adicione os rótulos dos clusters ao DataFrame original
+    data['Cluster'] = labels
+
+    # Divida os dados em grupos com base nos rótulos dos clusters
+    groups = data.groupby('Cluster')
+
+    # Salve cada grupo em um arquivo CSV separado
+    for group_id, group_data in groups:
+        group_data.to_csv(f'Gerado pelo Dbscan grupo_{group_id}.csv', index=False)
+
 
 kmeans_algo()
+dbscan_algo()
